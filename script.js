@@ -10,13 +10,13 @@ const todoList = document.getElementById("todo-list");
 const url = "http://localhost:4730/todos";
 //
 // ++++ LOCAL STATE ++++
+//
 const state = localStorage.getItem("state")
   ? JSON.parse(localStorage.getItem("state"))
   : {
       filter: "all",
       todos: [{ description: "learn something", id: "default", done: false }],
     };
-//
 // ++++ INITIAL CALL ++++
 updateAndRender();
 //
@@ -46,6 +46,7 @@ function renderElements() {
     checkbox.addEventListener("change", function (e) {
       const doneState = e.target.checked;
       todo.done = doneState;
+      updateTodo(todo);
       updateAndRender();
     });
 
@@ -58,7 +59,7 @@ function renderElements() {
   }
 }
 // API fetch
-function fetchFromApi() {
+function refresh() {
   fetch(url)
     .then((response) => response.json())
     .then((todos) => {
@@ -96,26 +97,28 @@ function addTodo(e) {
   } else {
     window.alert("todo is already in list!");
   }
-
   textInput.value = "";
-  updateAndRender();
+  renderElements();
+  refresh();
 }
 //
 // PUT request
-/*
-fetch(url, {
-  // `${url}/${state.todos[?].id}`
-  method: "PUT",
-  headers: { "content-type": "application/json" },
-  body: JSON.stringify(newTodo),
-})
-  .then((response) => response.json())
-  .then((updatedTodo) => {
-    console.log(updatedTodo);
+
+function updateTodo(todo) {
+  fetch(`${url}/${todo.id}`, {
+    //
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(todo),
   })
-  .catch((error) => console.error(error));
+    .then((response) => response.json())
+    .then((updatedTodo) => {
+      console.log(updatedTodo);
+    })
+    .catch((error) => console.error(error));
+}
 //
-*/
+
 // remove function
 function removeTodos(e) {
   e.preventDefault();
@@ -148,8 +151,10 @@ function updateLocalStorage() {
 // update & render function
 function updateAndRender() {
   updateLocalStorage();
+  refresh();
   renderElements();
 }
+// updateAndRender();
 // ++++ EVENT LISTENER ++++
 btnAdd.addEventListener("click", addTodo);
 btnRemove.addEventListener("click", removeTodos);
