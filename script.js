@@ -9,7 +9,7 @@ const optionsOpen = document.getElementById("open");
 const todoList = document.getElementById("todo-list");
 const url = "http://localhost:4730/todos";
 //
-// state
+// ++++ LOCAL STATE ++++
 const state = localStorage.getItem("state")
   ? JSON.parse(localStorage.getItem("state"))
   : {
@@ -17,15 +17,13 @@ const state = localStorage.getItem("state")
       todos: [{ description: "learn something", id: "default", done: false }],
     };
 //
-// call render function
-fetchFromApi();
-renderElements();
+// ++++ INITIAL CALL ++++
+updateAndRender();
 //
-// FUNCTIONS //
+// ++++ FUNCTIONS ++++
 // render function
 function renderElements() {
   todoList.innerHTML = "";
-
   // create elements
   for (const todo of state.todos.filter((todo) => {
     if (state.filter === "done") {
@@ -64,10 +62,10 @@ function fetchFromApi() {
   fetch(url)
     .then((response) => response.json())
     .then((todos) => {
-      console.log(todos);
       state.todos = todos;
       renderElements();
-    });
+    })
+    .catch((error) => console.error(error));
 }
 // add todo function
 function addTodo(e) {
@@ -77,57 +75,73 @@ function addTodo(e) {
     window.alert("add todo pls!");
     return;
   }
-  // fetch POST
-  const newTodo = { description: todoValue, done: false };
-  fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(newTodo),
-  })
-    .then((response) => response.json())
-    .then((newTodoFromApi) => {
-      console.log(newTodoFromApi);
-    });
-  //
 
-  /*const todoObj = {
-    description: todoValue,
-    done: false,
-    id: createId(),
-  };
-  */
   if (
     state.todos.findIndex(
       (todo) =>
         todo.description.toLowerCase().trim() === todoValue.toLowerCase().trim()
     ) === -1
   ) {
-    state.todos.push(newTodo);
+    // POST
+    fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ description: todoValue, done: false }),
+    })
+      .then((response) => response.json())
+      .then((newTodoFromApi) => {
+        console.log(newTodoFromApi);
+      })
+      .catch((error) => console.error(error));
   } else {
     window.alert("todo is already in list!");
   }
+
   textInput.value = "";
   updateAndRender();
 }
-// createID function
-function createId() {
-  let date = Date().split(" ").slice(1, 5).join("-");
-  return date;
-}
-
+//
+// PUT request
+/*
+fetch(url, {
+  // `${url}/${state.todos[?].id}`
+  method: "PUT",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify(newTodo),
+})
+  .then((response) => response.json())
+  .then((updatedTodo) => {
+    console.log(updatedTodo);
+  })
+  .catch((error) => console.error(error));
+//
+*/
 // remove function
 function removeTodos(e) {
   e.preventDefault();
   const newArr = [];
+
   state.todos.forEach((todo) => {
-    if (!todo.done) {
+    if (todo.done) {
+      // DELETE request
+      fetch(`${url}/${todo.id}`, {
+        //
+        method: "DELETE",
+      })
+        .then((response) => response.json())
+        .then((updatedTodo) => {
+          console.log(updatedTodo);
+        })
+        .catch((error) => console.error(error));
+      //
+    } else {
       newArr.push(todo);
     }
   });
   state.todos = newArr;
   updateAndRender();
 }
-// Function to update local storage with the current state
+// function to update local storage with the current state
 function updateLocalStorage() {
   localStorage.setItem("state", JSON.stringify(state));
 }
@@ -136,7 +150,7 @@ function updateAndRender() {
   updateLocalStorage();
   renderElements();
 }
-// EVENT LISTENER //
+// ++++ EVENT LISTENER ++++
 btnAdd.addEventListener("click", addTodo);
 btnRemove.addEventListener("click", removeTodos);
 optionsDone.addEventListener("change", () => {
@@ -151,3 +165,10 @@ optionsAll.addEventListener("change", () => {
   state.filter = "all";
   updateAndRender();
 });
+//
+//
+// createID function
+// function createId() {
+//   let date = Date().split(" ").slice(1, 5).join("-");
+//   return date;
+// }
