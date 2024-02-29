@@ -34,7 +34,7 @@ input[type="text"] {
   height: 1.75rem;
   border-radius: 100%;
   font-size: 1.5rem;
-  background-color: rgb(169, 198, 251);
+  background-color: rgb(177, 202, 242);
   cursor: pointer;
 }
 
@@ -76,7 +76,7 @@ li > input {
 }
 
 #btn-remove {
-  background-color: rgb(169, 198, 251);
+  background-color: rgb(177, 202, 242);
   font-size: 0.75rem;
   margin-top: 0.5rem;
   padding: 0.25rem;
@@ -88,5 +88,5 @@ li > input {
 }
 
 .list-item-done {
-  background-color: lightgreen;
+  background-color: rgb(165, 232, 165);
 }
