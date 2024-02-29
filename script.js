@@ -10,7 +10,6 @@ const todoList = document.getElementById("todo-list");
 const url = "http://localhost:4730/todos";
 //
 // ++++ LOCAL STATE ++++
-//
 const state = localStorage.getItem("state")
   ? JSON.parse(localStorage.getItem("state"))
   : {
@@ -18,7 +17,9 @@ const state = localStorage.getItem("state")
       todos: [{ description: "learn something", id: "default", done: false }],
     };
 // ++++ INITIAL CALL ++++
-updateAndRender();
+updateLocalStorage();
+refresh();
+renderElements();
 //
 // ++++ FUNCTIONS ++++
 // render function
@@ -46,8 +47,9 @@ function renderElements() {
     checkbox.addEventListener("change", function (e) {
       const doneState = e.target.checked;
       todo.done = doneState;
-      updateTodo(todo);
-      updateAndRender();
+      updateDoneState(todo);
+      refresh();
+      renderElements();
     });
 
     itemLabel.textContent = todo.description;
@@ -64,6 +66,7 @@ function refresh() {
     .then((response) => response.json())
     .then((todos) => {
       state.todos = todos;
+      updateLocalStorage();
       renderElements();
     })
     .catch((error) => console.error(error));
@@ -76,7 +79,6 @@ function addTodo(e) {
     window.alert("add todo pls!");
     return;
   }
-
   if (
     state.todos.findIndex(
       (todo) =>
@@ -89,60 +91,54 @@ function addTodo(e) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ description: todoValue, done: false }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+      })
       .then((newTodoFromApi) => {
         console.log(newTodoFromApi);
+        refresh();
       })
-      .catch((error) => console.error(error));
+      .catch((error) => window.alert(error)); // console.error(error));
   } else {
     window.alert("todo is already in list!");
   }
   textInput.value = "";
-  renderElements();
   refresh();
+  renderElements();
 }
 //
 // PUT request
-
-function updateTodo(todo) {
+function updateDoneState(todo) {
   fetch(`${url}/${todo.id}`, {
-    //
     method: "PUT",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(todo),
   })
-    .then((response) => response.json())
-    .then((updatedTodo) => {
-      console.log(updatedTodo);
+    .then((response) => {
+      console.log(response);
+      refresh();
     })
-    .catch((error) => console.error(error));
+    .catch((error) => window.alert(error)); //console.error(error));
 }
 //
-
 // remove function
 function removeTodos(e) {
   e.preventDefault();
-  const newArr = [];
-
   state.todos.forEach((todo) => {
     if (todo.done) {
-      // DELETE request
       fetch(`${url}/${todo.id}`, {
-        //
         method: "DELETE",
       })
-        .then((response) => response.json())
-        .then((updatedTodo) => {
-          console.log(updatedTodo);
+        .then((response) => {
+          console.log(response);
+          refresh();
         })
-        .catch((error) => console.error(error));
-      //
-    } else {
-      newArr.push(todo);
+        .catch((error) => window.alert(error)); // console.error(error));
     }
   });
-  state.todos = newArr;
-  updateAndRender();
+
+  refresh();
+  renderElements();
 }
 // function to update local storage with the current state
 function updateLocalStorage() {
@@ -154,7 +150,7 @@ function updateAndRender() {
   refresh();
   renderElements();
 }
-// updateAndRender();
+//
 // ++++ EVENT LISTENER ++++
 btnAdd.addEventListener("click", addTodo);
 btnRemove.addEventListener("click", removeTodos);
