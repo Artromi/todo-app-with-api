@@ -1,5 +1,5 @@
 "use strict";
-
+const formEl = document.getElementById("add-todo-form");
 const btnAdd = document.getElementById("btn-add");
 const textInput = document.getElementById("todo-input");
 const btnRemove = document.getElementById("btn-remove");
@@ -42,7 +42,8 @@ function renderElements() {
     checkbox.id = todo.id;
     checkbox.checked = todo.done;
     if (checkbox.checked) {
-      itemLabel.classList.toggle("linethrough");
+      itemLabel.classList.toggle("done");
+      listItem.classList.toggle("list-item-done");
     }
     checkbox.addEventListener("change", function (e) {
       const doneState = e.target.checked;

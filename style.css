@@ -4,49 +4,89 @@
   box-sizing: border-box;
 }
 html {
-  font-family: sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
 }
 body {
   margin: 0;
 }
-
+main {
+  margin: 1rem;
+  border-radius: 5px;
+  background-color: ghostwhite;
+  max-width: 500px;
+  min-width: 250px;
+  box-shadow: 0.5rem 0.5rem 2rem;
+  padding: 0.5rem;
+}
 h1 {
-  margin-top: 5rem;
-}
-form,
-h1 {
-  margin-left: 8rem;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  border: none;
+  text-align: center;
+  padding-top: 0.5rem;
 }
 
-.radio-buttons {
-  margin: 0.5rem;
-}
-button {
-  margin-block: 0.5rem;
-  padding-inline: 0.5rem;
-}
-
-#btn-remove {
-  background-color: rgb(248, 199, 205);
+input[type="text"] {
+  border-radius: 5px;
+  font-size: 0.75rem;
 }
 
 #btn-add {
-  background-color: rgb(208, 245, 208);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 100%;
+  font-size: 1.5rem;
+  background-color: rgb(169, 198, 251);
+  cursor: pointer;
 }
 
+input[type="text"]:focus {
+  border: 2px solid gray;
+  outline-style: none;
+}
+
+#add-todo-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+#filter-and-delete-section {
+  text-align: center;
+}
+
+#todo-list-section {
+  padding-bottom: 5rem;
+}
+ul {
+  padding-inline: 0.125rem;
+}
 li {
   list-style: none;
-  font-size: 1.25rem;
+  padding: 0.25rem;
+  margin-block: 0.125rem;
+  background-color: mistyrose;
+  border-radius: 5px;
+}
+li > label {
+  margin-right: auto;
+}
+
+li > input {
+  margin-right: 0.25rem;
+}
+
+#btn-remove {
+  background-color: rgb(169, 198, 251);
+  font-size: 0.75rem;
   margin-top: 0.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
 }
-ul > li > label {
-  padding-left: 0.5rem;
-}
-.linethrough {
+
+.done {
   text-decoration: line-through;
+}
+
+.list-item-done {
+  background-color: lightgreen;
 }

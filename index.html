@@ -9,43 +9,51 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Todo App</h1>
-    <form autocomplete="off">
-      <label for="all">
+    <main>
+      <h1>Todos</h1>
+      <form id="add-todo-form">
         <input
-          type="radio"
-          class="radio-buttons"
-          id="all"
-          name="radio-options"
-          checked
-        />All</label
-      >
-      <label for="open">
-        <input
-          type="radio"
-          class="radio-buttons"
-          id="open"
-          name="radio-options"
-        />Open</label
-      >
-      <label for="done">
-        <input
-          type="radio"
-          class="radio-buttons"
-          id="done"
-          name="radio-options"
-        />Done</label
-      >
-      <div id="button-container">
-        <button id="btn-remove">Remove done Todos</button>
-        <div id="add-todo-container">
-          <input type="text" placeholder="what todo next?" id="todo-input" />
-          <button id="btn-add">Add</button>
+          type="text"
+          placeholder="what todo next?"
+          id="todo-input"
+          autocomplete="off"
+        />
+        <button type="submit" id="btn-add">+</button>
+      </form>
+      <form id="filter-and-delete-section" autocomplete="off">
+        <div id="filter-container">
+          <label for="all">
+            <input
+              type="radio"
+              class="radio-buttons"
+              id="all"
+              name="radio-options"
+              checked
+            />All</label
+          >
+          <label for="open">
+            <input
+              type="radio"
+              class="radio-buttons"
+              id="open"
+              name="radio-options"
+            />Open</label
+          >
+          <label for="done">
+            <input
+              type="radio"
+              class="radio-buttons"
+              id="done"
+              name="radio-options"
+            />Done</label
+          >
         </div>
-      </div>
+        <div id="button-container">
+          <button id="btn-remove">Remove done Todos</button>
+        </div>
+      </form>
       <ul id="todo-list"></ul>
-    </form>
-
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
