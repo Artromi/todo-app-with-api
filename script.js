@@ -67,7 +67,7 @@ function refresh() {
     })
     .catch((error) => window.alert(error));
 }
-// add todo function
+// add todo function (POST)
 function addTodo(e) {
   e.preventDefault();
   let todoValue = textInput.value;
@@ -98,7 +98,7 @@ function addTodo(e) {
   textInput.value = "";
 }
 //
-// PUT request
+// Update done state (PUT)
 function updateDoneState(todo) {
   fetch(`${url}/${todo.id}`, {
     method: "PUT",
@@ -145,10 +145,3 @@ optionsAll.addEventListener("change", () => {
   state.filter = "all";
   refresh();
 });
-//
-//
-// createID function
-// function createId() {
-//   let date = Date().split(" ").slice(1, 5).join("-");
-//   return date;
-// }
