@@ -32,7 +32,7 @@ h1 {
 #btn-add {
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: 100%;
+  border-radius: 5px;
   font-size: 1.5rem;
   background-color: rgb(177, 202, 242);
   cursor: pointer;
@@ -66,13 +66,6 @@ li {
   background-color: mistyrose;
   border-radius: 5px;
 }
-li > label {
-  margin-right: auto;
-}
-
-li > input {
-  margin-right: 0.25rem;
-}
 
 #btn-remove {
   background-color: rgb(177, 202, 242);
@@ -80,8 +73,9 @@ li > input {
   margin-top: 0.5rem;
   padding: 0.25rem;
   cursor: pointer;
+  border-radius: 5px;
 }
-
+/*classes for doneState toggle*/
 .done {
   text-decoration: line-through;
 }

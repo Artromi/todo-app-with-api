@@ -10,17 +10,13 @@ const todoList = document.getElementById("todo-list");
 const url = "http://localhost:4730/todos";
 //
 // ++++ LOCAL STATE ++++
-const state = localStorage.getItem("state")
-  ? JSON.parse(localStorage.getItem("state"))
-  : {
-      filter: "all",
-      todos: [{ description: "learn something", id: "default", done: false }],
-    };
+const state = {
+  filter: "",
+  todos: [],
+};
 //
 // ++++ INITIAL CALL ++++
-updateLocalStorage();
 refresh();
-renderElements();
 //
 // ++++ FUNCTIONS ++++
 // render function
@@ -51,7 +47,6 @@ function renderElements() {
       todo.done = doneState;
       updateDoneState(todo);
       refresh();
-      renderElements();
     });
 
     itemLabel.textContent = todo.description;
@@ -68,10 +63,9 @@ function refresh() {
     .then((response) => response.json())
     .then((todos) => {
       state.todos = todos;
-      updateLocalStorage();
       renderElements();
     })
-    .catch((error) => console.error(error));
+    .catch((error) => window.alert(error));
 }
 // add todo function
 function addTodo(e) {
@@ -94,10 +88,7 @@ function addTodo(e) {
       body: JSON.stringify({ description: todoValue, done: false }),
     })
       .then((response) => {
-        response.json();
-      })
-      .then((newTodoFromApi) => {
-        console.log(newTodoFromApi);
+        console.log(response);
         refresh();
       })
       .catch((error) => window.alert(error)); // console.error(error));
@@ -105,8 +96,6 @@ function addTodo(e) {
     window.alert("todo is already in list!");
   }
   textInput.value = "";
-  refresh();
-  renderElements();
 }
 //
 // PUT request
@@ -117,7 +106,6 @@ function updateDoneState(todo) {
     body: JSON.stringify(todo),
   })
     .then((response) => {
-      console.log(response);
       refresh();
     })
     .catch((error) => window.alert(error)); //console.error(error));
@@ -140,17 +128,6 @@ function removeTodos(e) {
   });
 
   refresh();
-  renderElements();
-}
-// function to update local storage with the current state
-function updateLocalStorage() {
-  localStorage.setItem("state", JSON.stringify(state));
-}
-// update & render function
-function updateAndRender() {
-  updateLocalStorage();
-  refresh();
-  renderElements();
 }
 //
 // ++++ EVENT LISTENER ++++
@@ -158,15 +135,15 @@ btnAdd.addEventListener("click", addTodo);
 btnRemove.addEventListener("click", removeTodos);
 optionsDone.addEventListener("change", () => {
   state.filter = "done";
-  updateAndRender();
+  refresh();
 });
 optionsOpen.addEventListener("change", () => {
   state.filter = "open";
-  updateAndRender();
+  refresh();
 });
 optionsAll.addEventListener("change", () => {
   state.filter = "all";
-  updateAndRender();
+  refresh();
 });
 //
 //
