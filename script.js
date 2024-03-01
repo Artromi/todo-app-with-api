@@ -1,5 +1,5 @@
 "use strict";
-const formEl = document.getElementById("add-todo-form");
+const addForm = document.getElementById("add-todo-form");
 const btnAdd = document.getElementById("btn-add");
 const textInput = document.getElementById("todo-input");
 const btnRemove = document.getElementById("btn-remove");
@@ -16,6 +16,7 @@ const state = localStorage.getItem("state")
       filter: "all",
       todos: [{ description: "learn something", id: "default", done: false }],
     };
+//
 // ++++ INITIAL CALL ++++
 updateLocalStorage();
 refresh();

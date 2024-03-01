@@ -24,7 +24,7 @@ h1 {
   padding-top: 0.5rem;
 }
 
-input[type="text"] {
+#todo-input {
   border-radius: 5px;
   font-size: 0.75rem;
 }
@@ -39,7 +39,6 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border: 2px solid gray;
   outline-style: none;
 }
 
