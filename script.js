@@ -46,7 +46,7 @@ function renderElements() {
       const doneState = e.target.checked;
       todo.done = doneState;
       updateDoneState(todo);
-      refresh();
+      renderElements();
     });
 
     itemLabel.textContent = todo.description;
@@ -68,8 +68,7 @@ function refresh() {
     .catch((error) => window.alert(error));
 }
 // add todo function (POST)
-function addTodo(e) {
-  e.preventDefault();
+function addTodo() {
   let todoValue = textInput.value;
   if (!todoValue.trim()) {
     window.alert("add todo pls!");
@@ -79,33 +78,36 @@ function addTodo(e) {
     state.todos.findIndex(
       (todo) =>
         todo.description.toLowerCase().trim() === todoValue.toLowerCase().trim()
-    ) === -1
+    ) !== -1
   ) {
-    // POST
-    fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ description: todoValue, done: false }),
-    })
-      .then((response) => {
-        console.log(response);
-        refresh();
-      })
-      .catch((error) => window.alert(error)); // console.error(error));
-  } else {
     window.alert("todo is already in list!");
+    return;
   }
-  textInput.value = "";
+
+  // POST
+  fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ description: todoValue, done: false }),
+  })
+    .then((response) => {
+      console.log(response);
+      refresh();
+      if (response.ok) {
+        textInput.value = "";
+      }
+    })
+    .catch((error) => window.alert(error)); // console.error(error));
 }
 //
 // Update done state (PUT)
 function updateDoneState(todo) {
   fetch(`${url}/${todo.id}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(todo),
+    body: JSON.stringify({ done: todo.done }),
   })
-    .then((response) => {
+    .then(() => {
       refresh();
     })
     .catch((error) => window.alert(error)); //console.error(error));
@@ -119,29 +121,29 @@ function removeTodos(e) {
       fetch(`${url}/${todo.id}`, {
         method: "DELETE",
       })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           refresh();
         })
         .catch((error) => window.alert(error)); // console.error(error));
     }
   });
-
-  refresh();
 }
 //
 // ++++ EVENT LISTENER ++++
-btnAdd.addEventListener("click", addTodo);
+btnAdd.addEventListener("click", (e) => {
+  e.preventDefault();
+  addTodo();
+});
 btnRemove.addEventListener("click", removeTodos);
 optionsDone.addEventListener("change", () => {
   state.filter = "done";
-  refresh();
+  renderElements();
 });
 optionsOpen.addEventListener("change", () => {
   state.filter = "open";
-  refresh();
+  renderElements();
 });
 optionsAll.addEventListener("change", () => {
   state.filter = "all";
-  refresh();
+  renderElements();
 });
