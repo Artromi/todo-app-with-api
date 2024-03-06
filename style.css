@@ -11,7 +11,7 @@ body {
   margin: 0;
 }
 main {
-  margin: 1rem;
+  margin: 1rem auto;
   border-radius: 5px;
   background-color: ghostwhite;
   max-width: 500px;
