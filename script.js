@@ -10,17 +10,13 @@ const todoList = document.getElementById("todo-list");
 const url = "http://localhost:4730/todos";
 //
 // ++++ LOCAL STATE ++++
-const state = localStorage.getItem("state")
-  ? JSON.parse(localStorage.getItem("state"))
-  : {
-      filter: "all",
-      todos: [{ description: "learn something", id: "default", done: false }],
-    };
+const state = {
+  filter: "",
+  todos: [],
+};
 //
 // ++++ INITIAL CALL ++++
-updateLocalStorage();
 refresh();
-renderElements();
 //
 // ++++ FUNCTIONS ++++
 // render function
@@ -50,7 +46,6 @@ function renderElements() {
       const doneState = e.target.checked;
       todo.done = doneState;
       updateDoneState(todo);
-      refresh();
       renderElements();
     });
 
@@ -68,14 +63,12 @@ function refresh() {
     .then((response) => response.json())
     .then((todos) => {
       state.todos = todos;
-      updateLocalStorage();
       renderElements();
     })
-    .catch((error) => console.error(error));
+    .catch((error) => window.alert(error));
 }
-// add todo function
-function addTodo(e) {
-  e.preventDefault();
+// add todo function (POST)
+function addTodo() {
   let todoValue = textInput.value;
   if (!todoValue.trim()) {
     window.alert("add todo pls!");
@@ -85,39 +78,36 @@ function addTodo(e) {
     state.todos.findIndex(
       (todo) =>
         todo.description.toLowerCase().trim() === todoValue.toLowerCase().trim()
-    ) === -1
+    ) !== -1
   ) {
-    // POST
-    fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ description: todoValue, done: false }),
-    })
-      .then((response) => {
-        response.json();
-      })
-      .then((newTodoFromApi) => {
-        console.log(newTodoFromApi);
-        refresh();
-      })
-      .catch((error) => window.alert(error)); // console.error(error));
-  } else {
     window.alert("todo is already in list!");
+    return;
   }
-  textInput.value = "";
-  refresh();
-  renderElements();
-}
-//
-// PUT request
-function updateDoneState(todo) {
-  fetch(`${url}/${todo.id}`, {
-    method: "PUT",
+
+  // POST
+  fetch(url, {
+    method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(todo),
+    body: JSON.stringify({ description: todoValue, done: false }),
   })
     .then((response) => {
       console.log(response);
+      refresh();
+      if (response.ok) {
+        textInput.value = "";
+      }
+    })
+    .catch((error) => window.alert(error)); // console.error(error));
+}
+//
+// Update done state (PUT)
+function updateDoneState(todo) {
+  fetch(`${url}/${todo.id}`, {
+    method: "PATCH",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ done: todo.done }),
+  })
+    .then(() => {
       refresh();
     })
     .catch((error) => window.alert(error)); //console.error(error));
@@ -131,47 +121,29 @@ function removeTodos(e) {
       fetch(`${url}/${todo.id}`, {
         method: "DELETE",
       })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           refresh();
         })
         .catch((error) => window.alert(error)); // console.error(error));
     }
   });
-
-  refresh();
-  renderElements();
-}
-// function to update local storage with the current state
-function updateLocalStorage() {
-  localStorage.setItem("state", JSON.stringify(state));
-}
-// update & render function
-function updateAndRender() {
-  updateLocalStorage();
-  refresh();
-  renderElements();
 }
 //
 // ++++ EVENT LISTENER ++++
-btnAdd.addEventListener("click", addTodo);
+btnAdd.addEventListener("click", (e) => {
+  e.preventDefault();
+  addTodo();
+});
 btnRemove.addEventListener("click", removeTodos);
 optionsDone.addEventListener("change", () => {
   state.filter = "done";
-  updateAndRender();
+  renderElements();
 });
 optionsOpen.addEventListener("change", () => {
   state.filter = "open";
-  updateAndRender();
+  renderElements();
 });
 optionsAll.addEventListener("change", () => {
   state.filter = "all";
-  updateAndRender();
+  renderElements();
 });
-//
-//
-// createID function
-// function createId() {
-//   let date = Date().split(" ").slice(1, 5).join("-");
-//   return date;
-// }

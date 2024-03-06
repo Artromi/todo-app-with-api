@@ -3,6 +3,12 @@
 *::after {
   box-sizing: border-box;
 }
+:root {
+  --main-background: ghostwhite;
+  --btn-color: rgb(177, 202, 242);
+  --li-primary-color: mistyrose;
+  --li-secondary-color: rgb(165, 232, 165);
+}
 html {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 24px;
@@ -13,10 +19,11 @@ body {
 main {
   margin: 1rem auto;
   border-radius: 5px;
-  background-color: ghostwhite;
+  border: 3px solid grey;
+  background-color: var(--main-background);
   max-width: 500px;
   min-width: 250px;
-  box-shadow: 0.5rem 0.5rem 2rem;
+
   padding: 0.5rem;
 }
 h1 {
@@ -32,9 +39,9 @@ h1 {
 #btn-add {
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: 100%;
+  border-radius: 5px;
   font-size: 1.5rem;
-  background-color: rgb(177, 202, 242);
+  background-color: var(--btn-color);
   cursor: pointer;
 }
 
@@ -63,29 +70,25 @@ li {
   list-style: none;
   padding: 0.25rem;
   margin-block: 0.125rem;
-  background-color: mistyrose;
+  background-color: var(--li-primary-color);
   border-radius: 5px;
 }
-li > label {
-  margin-right: auto;
+ul > li > label {
+  margin-left: 0.25rem;
 }
-
-li > input {
-  margin-right: 0.25rem;
-}
-
 #btn-remove {
-  background-color: rgb(177, 202, 242);
+  background-color: var(--btn-color);
   font-size: 0.75rem;
   margin-top: 0.5rem;
   padding: 0.25rem;
   cursor: pointer;
+  border-radius: 5px;
 }
-
+/*classes for doneState toggle*/
 .done {
   text-decoration: line-through;
 }
 
 .list-item-done {
-  background-color: rgb(165, 232, 165);
+  background-color: var(--li-secondary-color);
 }
