@@ -97,7 +97,7 @@ function addTodo() {
         textInput.value = "";
       }
     })
-    .catch((error) => window.alert(error)); // console.error(error));
+    .catch((error) => window.alert(error));
 }
 //
 // Update done state (PUT)
@@ -110,7 +110,7 @@ function updateDoneState(todo) {
     .then(() => {
       refresh();
     })
-    .catch((error) => window.alert(error)); //console.error(error));
+    .catch((error) => window.alert(error));
 }
 //
 // remove function
@@ -124,7 +124,7 @@ function removeTodos(e) {
         .then(() => {
           refresh();
         })
-        .catch((error) => window.alert(error)); // console.error(error));
+        .catch((error) => window.alert(error));
     }
   });
 }
