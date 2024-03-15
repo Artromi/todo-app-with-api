@@ -1,0 +1,16 @@
+{
+  "name": "todo-app-with-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "serve": "serve ./src",
+    "e2e": "cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.6",
+    "serve": "^14.2.1"
+  }
+}
