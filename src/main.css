@@ -1,0 +1,94 @@
+*,
+*::after,
+*::after {
+  box-sizing: border-box;
+}
+:root {
+  --main-background: ghostwhite;
+  --btn-color: rgb(177, 202, 242);
+  --li-primary-color: mistyrose;
+  --li-secondary-color: rgb(165, 232, 165);
+}
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+}
+body {
+  margin: 0;
+}
+main {
+  margin: 1rem auto;
+  border-radius: 5px;
+  border: 3px solid grey;
+  background-color: var(--main-background);
+  max-width: 500px;
+  min-width: 250px;
+
+  padding: 0.5rem;
+}
+h1 {
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+#todo-input {
+  border-radius: 5px;
+  font-size: 0.75rem;
+}
+
+#btn-add {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  background-color: var(--btn-color);
+  cursor: pointer;
+}
+
+input[type="text"]:focus {
+  outline-style: none;
+}
+
+#add-todo-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+#filter-and-delete-section {
+  text-align: center;
+}
+
+#todo-list-section {
+  padding-bottom: 5rem;
+}
+ul {
+  padding-inline: 0.125rem;
+}
+li {
+  list-style: none;
+  padding: 0.25rem;
+  margin-block: 0.125rem;
+  background-color: var(--li-primary-color);
+  border-radius: 5px;
+}
+ul > li > label {
+  margin-left: 0.25rem;
+}
+#btn-remove {
+  background-color: var(--btn-color);
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+/*classes for doneState toggle*/
+.done {
+  text-decoration: line-through;
+}
+
+.list-item-done {
+  background-color: var(--li-secondary-color);
+}
