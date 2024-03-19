@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 /src/style.css
 /node_modules
 cypress.config.js
+=======
+style.css
+/node_modules
+/src/style.css
+>>>>>>> a90b6aa5f59c439455aa032f472d196ae96e1210
 
